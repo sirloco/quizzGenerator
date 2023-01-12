@@ -1,4 +1,4 @@
-with open("cuestionario.txt", mode="r") as cuestionario:
+with open("limpieza1.txt", mode="r") as cuestionario:
 
     contador = 0
 
@@ -20,11 +20,11 @@ with open("cuestionario.txt", mode="r") as cuestionario:
                 bloque[indice] = bloque[indice][3:]         #Se quita las letras a), b), c) y d)
                 test = bloque[indice][-1]
                 if bloque[indice][-1] == '*':               #si tiene asterisco al final
-                    bloque[indice] = bloque[indice][:-2]    #Se quita asterisco
+                    bloque[indice] = bloque[indice][:-1]    #Se quita asterisco
                 else:                                       #Si no tiene asterisco al final
                     esCorrecta[indice] = "0"                #Se marca como incorrecta
                             
-            sql = "INSERT INTO wp_mlw_questions VALUES (NULL, '1', '', 'a:4:{\
+            sql = "INSERT INTO wp_mlw_questions VALUES (NULL, '3', '', 'a:4:{\
 i:0;a:3:{i:0;s:" + str(len(bloque[1].encode("utf8"))) + ":\"" + bloque[1] + "\";i:1;d:0;i:2;i:" + esCorrecta[1] + ";}\
 i:1;a:3:{i:0;s:" + str(len(bloque[2].encode("utf8"))) + ":\"" + bloque[2] + "\";i:1;d:0;i:2;i:" + esCorrecta[2] + ";}\
 i:2;a:3:{i:0;s:" + str(len(bloque[3].encode("utf8"))) + ":\"" + bloque[3] + "\";i:1;d:0;i:2;i:" + esCorrecta[3] + ";}\
