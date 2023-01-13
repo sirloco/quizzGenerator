@@ -1,3 +1,77 @@
+import tkinter as tk
+from tkinter.filedialog import askopenfilename, asksaveasfilename
+
+def open_file():
+
+    filepath = askopenfilename(
+
+        filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")]
+
+    )
+
+    if not filepath:
+
+        return
+
+    txt_edit.delete("1.0", tk.END)
+
+    with open(filepath, mode="r", encoding="utf-8") as input_file:
+
+        text = input_file.read()
+
+        txt_edit.insert(tk.END, text)
+
+def save_file():
+
+    filepath = asksaveasfilename(
+
+        defaultextension=".sql",
+
+        filetypes=[("Text Files", "*.sql"), ("All Files", "*.*")],
+
+    )
+
+    if not filepath:
+
+        return
+
+    with open(filepath, mode="w", encoding="utf-8") as output_file:
+
+        text = txt_edit.get("1.0", tk.END)
+
+        output_file.write(text)
+
+ventana = tk.Tk()
+ventana.title("Generador de Inserts")
+
+#frame3 = tk.Frame(master=ventana, width=300, height=300, bg="blue")
+#frame3.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
+
+ventana.rowconfigure(0, minsize=300)
+
+ventana.columnconfigure(1, minsize=300)
+
+
+txt_edit = tk.Text(ventana)
+
+frm_buttons = tk.Frame(ventana, relief=tk.RAISED, bd=2)
+
+btn_open = tk.Button(frm_buttons, text="Abrir", command=open_file)
+
+btn_save = tk.Button(frm_buttons, text="Generar", command=save_file)
+
+btn_open.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
+
+btn_save.grid(row=1, column=0, sticky="ew", padx=5)
+
+frm_buttons.grid(row=0, column=0, sticky="ns")
+
+txt_edit.grid(row=0, column=1, sticky="nsew")
+
+
+ventana.mainloop()
+
+"""
 with open("limpieza1.txt", mode="r") as cuestionario:
 
     contador = 0
@@ -42,4 +116,4 @@ random\";s:14:\"case_sensitive\";s:0:\"\";s:16:\"image_size-width\";s:0:\"\";s:1
 
             contador = 0
 
-archivoResultante.close()
+archivoResultante.close()"""
