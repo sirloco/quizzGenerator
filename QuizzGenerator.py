@@ -2,6 +2,7 @@ import io
 import tkinter as tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from tkinter import messagebox
+from tkinter.simpledialog import askinteger
 
 class generadorSQL(tk.Tk):
 
@@ -33,62 +34,63 @@ class generadorSQL(tk.Tk):
 
                 return
 
-            txt_edit.delete("1.0", tk.END)
+            cajaTexto.delete("1.0", tk.END)
 
             with open(filepath, mode="r", encoding="utf-8") as input_file:
 
                 text = input_file.read()
 
-                txt_edit.insert(tk.END, text)
+                cajaTexto.insert(tk.END, text)
         
         def generarSql():
 
-            from tkinter.simpledialog import askinteger
+        
             idCuestionario = askinteger('Numero id del cuestionario', 'Introducir ID cuestionario')
-            
 
-            filepath = asksaveasfilename(
+            if idCuestionario:#Si no ha presionado cancelar sigue
+                    
+                filepath = asksaveasfilename(
 
-                defaultextension=".sql",
+                    defaultextension=".sql",
 
-                filetypes=[("Text Files", "*.sql"), ("All Files", "*.*")],
+                    filetypes=[("Text Files", "*.sql"), ("All Files", "*.*")],
 
-            )
+                )
 
-            if not filepath:
+                if not filepath:
 
-                return
+                    return
 
-            with open(filepath, mode="w", encoding="utf-8") as archivoResultante:
+                with open(filepath, mode="w", encoding="utf-8") as archivoResultante:
 
-                texto = txt_edit.get("1.0", tk.END)
+                    texto = cajaTexto.get("1.0", tk.END)
 
-                contador = 0
+                    contador = 0
 
-                bloque=[]
+                    bloque=[]
 
-                cuestionario = io.StringIO(texto)
-            
-                for linea in cuestionario:
+                    cuestionario = io.StringIO(texto)
                 
-                    bloque.append(linea.strip()) #Se instroduce la linea se le quita con strip los espacios y saltos de linea
-                    contador+=1
+                    for linea in cuestionario:
+                    
+                        bloque.append(linea.strip()) #Se instroduce la linea se le quita con strip los espacios y saltos de linea
+                        contador+=1
 
-                    if contador > 4:
-                        esCorrecta = {}
-                        #Se salta la posicion 0 poniendo range 1 hasta la longitud del array para ir a las respuestas >>> {1: 0, 2: 0, 3: 1, 4: 0}
-                        for indice in range(1,len(bloque)):
+                        if contador > 4:
+                            esCorrecta = {}
+                            #Se salta la posicion 0 poniendo range 1 hasta la longitud del array para ir a las respuestas >>> {1: 0, 2: 0, 3: 1, 4: 0}
+                            for indice in range(1,len(bloque)):
 
-                            esCorrecta[indice] = "1"                    #Por defecto todas empiezan como respuestas correctas
-            
-                            bloque[indice] = bloque[indice][3:]         #Se quita las letras a), b), c) y d)
-                            test = bloque[indice][-1]
-                            if bloque[indice][-1] == '*':               #si tiene asterisco al final
-                                bloque[indice] = bloque[indice][:-1]    #Se quita asterisco
-                            else:                                       #Si no tiene asterisco al final
-                                esCorrecta[indice] = "0"                #Se marca como incorrecta
-                                    
-                        sql = "INSERT INTO wp_mlw_questions VALUES (NULL, '" + str(idCuestionario) + "', '', 'a:4:{\
+                                esCorrecta[indice] = "1"                    #Por defecto todas empiezan como respuestas correctas
+                
+                                bloque[indice] = bloque[indice][3:]         #Se quita las letras a), b), c) y d)
+                                test = bloque[indice][-1]
+                                if bloque[indice][-1] == '*':               #si tiene asterisco al final
+                                    bloque[indice] = bloque[indice][:-1]    #Se quita asterisco
+                                else:                                       #Si no tiene asterisco al final
+                                    esCorrecta[indice] = "0"                #Se marca como incorrecta
+                                        
+                            sql = "INSERT INTO wp_mlw_questions VALUES (NULL, '" + str(idCuestionario) + "', '', 'a:4:{\
 i:0;a:3:{i:0;s:" + str(len(bloque[1].encode("utf8"))) + ":\"" + bloque[1] + "\";i:1;d:0;i:2;i:" + esCorrecta[1] + ";}\
 i:1;a:3:{i:0;s:" + str(len(bloque[2].encode("utf8"))) + ":\"" + bloque[2] + "\";i:1;d:0;i:2;i:" + esCorrecta[2] + ";}\
 i:2;a:3:{i:0;s:" + str(len(bloque[3].encode("utf8"))) + ":\"" + bloque[3] + "\";i:1;d:0;i:2;i:" + esCorrecta[3] + ";}\
@@ -100,18 +102,20 @@ random\";s:14:\"case_sensitive\";s:0:\"\";s:16:\"image_size-width\";s:0:\"\";s:1
 ;s:8:\"autofill\";s:0:\"\";s:10:\"limit_text\";s:1:\"0\";s:23:\"limit_multiple_response\";s:1:\"0\";s:17:\
 \"file_upload_limit\";s:1:\"0\";s:16:\"file_upload_type\";s:0:\"\";}', '', '0', '0');\n"
 
-                        archivoResultante.write(sql)
-                        bloque.clear()
-                        esCorrecta.clear()
+                            archivoResultante.write(sql)
+                            bloque.clear()
+                            esCorrecta.clear()
 
-                        contador = 0
-                
-            messagebox.showinfo(message="Generado!", title="Guardado")
+                            contador = 0
+                    
+                messagebox.showinfo(message="Generado!", title="Guardado")
         
         def vaciaTexto():
-            txt_edit.delete("1.0", tk.END)
+            cajaTexto.delete("1.0", tk.END)
             
-        txt_edit = tk.Text(self)
+        cajaTexto = tk.Text(self)
+
+        putoScroll = tk.Scrollbar(self, orient='vertical')
 
         menu = tk.Frame(self, relief=tk.RAISED)
 
@@ -121,6 +125,7 @@ random\";s:14:\"case_sensitive\";s:0:\"\";s:16:\"image_size-width\";s:0:\"\";s:1
 
         limpiar = tk.Button(menu, text="Vaciar", command=vaciaTexto)
 
+        # Se colocan las cosas en la rejilla
         menu.grid(row=0, column=0, sticky="ns")
 
         btnAbrir.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
@@ -129,7 +134,14 @@ random\";s:14:\"case_sensitive\";s:0:\"\";s:16:\"image_size-width\";s:0:\"\";s:1
 
         limpiar.grid(row=2, column=0, sticky="ew", padx=5, pady=5)
 
-        txt_edit.grid(row=0, column=1, sticky="nsew")
+        cajaTexto.grid(row=0, column=1, sticky="nsew")
+
+        putoScroll.grid(row=0, column=2, sticky="ns")
+
+        cajaTexto.config(yscrollcommand=putoScroll.set)
+
+        putoScroll.config(command=cajaTexto.yview)
+        
 
 if __name__ == "__main__":
     app = generadorSQL()
