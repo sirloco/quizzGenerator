@@ -89,12 +89,12 @@ class generadorSQL(tk.Tk):
                                     bloque[indice] = bloque[indice][:-1]    #Se quita asterisco
                                 else:                                       #Si no tiene asterisco al final
                                     esCorrecta[indice] = "0"                #Se marca como incorrecta
-                                        
+
                             sql = "INSERT INTO wp_mlw_questions VALUES (NULL, '" + str(idCuestionario) + "', '', 'a:4:{\
-i:0;a:3:{i:0;s:" + str(len(bloque[1].encode("utf8"))) + ":\"" + bloque[1] + "\";i:1;d:0;i:2;i:" + esCorrecta[1] + ";}\
-i:1;a:3:{i:0;s:" + str(len(bloque[2].encode("utf8"))) + ":\"" + bloque[2] + "\";i:1;d:0;i:2;i:" + esCorrecta[2] + ";}\
-i:2;a:3:{i:0;s:" + str(len(bloque[3].encode("utf8"))) + ":\"" + bloque[3] + "\";i:1;d:0;i:2;i:" + esCorrecta[3] + ";}\
-i:3;a:3:{i:0;s:" + str(len(bloque[4].encode("utf8"))) + ":\"" + bloque[4] + "\";i:1;d:0;i:2;i:" + esCorrecta[4] + ";}\
+i:0;a:3:{i:0;s:" + str(len(bloque[1].encode("utf8"))) + ":\"" + bloque[1] + "\";i:1;d:" + esCorrecta[1] + ";i:2;i:" + esCorrecta[1] + ";}\
+i:1;a:3:{i:0;s:" + str(len(bloque[2].encode("utf8"))) + ":\"" + bloque[2] + "\";i:1;d:" + esCorrecta[2] + ";i:2;i:" + esCorrecta[2] + ";}\
+i:2;a:3:{i:0;s:" + str(len(bloque[3].encode("utf8"))) + ":\"" + bloque[3] + "\";i:1;d:" + esCorrecta[3] + ";i:2;i:" + esCorrecta[3] + ";}\
+i:3;a:3:{i:0;s:" + str(len(bloque[4].encode("utf8"))) + ":\"" + bloque[4] + "\";i:1;d:" + esCorrecta[4] + ";i:2;i:" + esCorrecta[4] + ";}\
 }', '', '0', '', '0', '', '0', '', '0', '', '0', '', '0', '0', '', '1', '', '1', '0', '0', 'a:14:\
 {s:8:\"required\";i:1;s:12:\"answerEditor\";s:4:\"text\";s:14:\"question_title\";s:" + str(len(bloque[0].encode("utf8")))+":\"\
 "+bloque[0]+"\";s:14:\"featureImageID\";s:0:\"\";s:15:\"featureImageSrc\";s:0:\"\";s:11:\"matchAnswer\";s:6:\"\
